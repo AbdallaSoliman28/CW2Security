@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="signup-form">
+            <h2>Sign Up</h2>
+            <form id="signupForm">
+                <input type="text" id="signup-name" placeholder="Name">
+                <input type="email" id="signup-email" placeholder="Email">
+                <input type="password" id="signup-password" placeholder="Password">
+                <input type="password" id="signup-repassword" placeholder="Confirm Password">
+                <button type="button" onclick="generateVerificationNumber()">Sign Up</button>
+            </form>
+            <p>Already have an account? <a href="login.html">Login</a></p>
+            <div id="verificationDisplay" class="hidden"></div> <!-- Display generated code -->
+        </div>
+    </div>
+    <script src="signup.js"></script>
+    <script>
+        function generateVerificationNumber() {
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const repassword = document.getElementById('signup-repassword').value;
+
+            // Password policy regex
+            const passwordPolicy = /^(?=.*[A-Z])(?=.*[!@#$%^&*()])(?=.*[a-z]).{6,}$/;
+
+            if (!passwordPolicy.test(password)) {
+                alert('Password must contain at least 6 characters, including one capital letter and one special character (!@#$%^&*())');
+                return;
+            }
+
+            if (password !== repassword) {
+                alert('Passwords do not match');
+                return;
+            }
+
+            const verificationNumber = Math.floor(1000 + Math.random() * 9000);
+            localStorage.setItem('verificationCode', verificationNumber);
+            document.getElementById('verificationDisplay').innerHTML = `Verification Code: ${verificationNumber}`;
+            document.getElementById('verificationDisplay').classList.remove("hidden");
+            window.location.href = 'verification.html';
+        }
+    </script>
+</body>
+</html>

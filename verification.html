@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Email Verification</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Provided CSS styles */
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(135deg, #153677, #4e085f);
+            color: #fff;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #153677, #4e085f);
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .verification-form {
+            width: 100%;
+            max-width: 400px;
+            background: #fff;
+            padding: 40px 30px 70px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+        .verification-form h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #000; /* Changing font color to black */
+        }
+        .verification-form form {
+            display: flex;
+            flex-direction: column;
+        }
+        .verification-form input {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+        .verification-form button {
+            padding: 12px;
+            border: none;
+            border-radius: 20px;
+            background: #ff5945;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .verification-form button:hover {
+            background: #e53e3e;
+        }
+        .verification-form a {
+            color: #ff5945;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .verification-form a:hover {
+            text-decoration: underline;
+        }
+        .hidden {
+            display: none;
+        }
+        /* Additional styles if needed */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="verification-form">
+            <h2>Email Verification</h2>
+            <form id="verificationForm">
+                <input type="text" id="verification-code" placeholder="Enter Verification Code">
+                <button type="button" onclick="verifyCode()">Verify</button>
+            </form>
+            <a href="#" onclick="window.history.back()">Back to Sign Up</a>
+            <div id="verificationDisplay" class="hidden"></div> <!-- Display generated code -->
+        </div>
+    </div>
+
+    <script>
+        // Function to verify the code
+        function verifyCode() {
+            const enteredCode = document.getElementById("verification-code").value;
+            const storedCode = localStorage.getItem('verificationCode');
+
+            if (!storedCode) {
+                alert("No verification code found. Please sign up again.");
+                return;
+            }
+
+            if (enteredCode === storedCode) {
+                alert("Verification successful!");
+                window.location.href = 'index.html'; // Redirect after verification
+            } else {
+                alert("Incorrect verification code. Please try again.");
+            }
+        }
+
+        // Function to display the verification code on the verification page
+        function displayVerificationCode() {
+            const storedCode = localStorage.getItem('verificationCode');
+            const verificationDisplay = document.getElementById('verificationDisplay');
+            verificationDisplay.innerHTML = `Verification Code: ${storedCode}`;
+            verificationDisplay.classList.remove("hidden");
+        }
+
+        // Load verification code display on page load
+        displayVerificationCode();
+    </script>
+</body>
+</html>

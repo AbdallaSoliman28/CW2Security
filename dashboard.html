@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Updated CSS styles */
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(135deg, #153677, #4e085f);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+        .dashboard-content {
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #fff;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        tr:hover .encrypted {
+            display: inline;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .delete-btn, .allow-btn, .restrict-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .delete-btn {
+            background-color: #ff5945;
+            color: white;
+        }
+        .delete-btn:hover {
+            background-color: #e53e3e;
+        }
+        .allow-btn {
+            background-color: #46b26a;
+            color: white;
+        }
+        .allow-btn:hover {
+            background-color: #3e995f;
+        }
+        .restrict-btn {
+            background-color: #ff5945;
+            color: white;
+        }
+        .restrict-btn:hover {
+            background-color: #d9382b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard-content">
+            <h1>Admin Dashboard</h1>
+            <!-- Display user data in a table -->
+            <table id="userTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="userData">
+                    <!-- User data will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <footer>
+        <!-- Footer content -->
+        <p>&copy; 2023 Your Dashboard. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Sample encryption function
+        function encryptPassword(password) {
+            // Perform encryption logic (This could be your actual encryption logic)
+            return password.split('').map(char => String.fromCharCode(char.charCodeAt(0) + 1)).join('');
+        }
+
+        // Function to reveal password on hover
+        function revealPassword(span) {
+            span.textContent = span.dataset.password;
+        }
+
+        // Function to delete a row
+        function deleteRow(row) {
+            row.remove();
+            // Add logic to delete the corresponding user data from your storage here
+        }
+
+        // Function to allow access to a user
+        function allowAccess(row) {
+            // Add logic to allow access to the user (e.g., update permissions)
+            row.style.backgroundColor = '#46b26a'; // Update row color or add a status
+        }
+
+        // Function to restrict access to a user
+        function restrictAccess(row) {
+            // Add logic to restrict access to the user (e.g., update permissions)
+            row.style.backgroundColor = '#ff5945'; // Update row color or add a status
+        }
+
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        const userDataElement = document.getElementById('userData');
+
+        if (userData) {
+            userData.forEach(user => {
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `<td>${user.name}</td><td>${user.email}</td><td><span class="encrypted" data-password="${encryptPassword(user.password)}" onmouseover="revealPassword(this)" onmouseout="this.textContent='***'">***</span></td><td class="action-buttons"><button class="delete-btn" onclick="deleteRow(this.parentNode.parentNode)">Delete</button><button class="allow-btn" onclick="allowAccess(this.parentNode.parentNode)">Allow Access</button><button class="restrict-btn" onclick="restrictAccess(this.parentNode.parentNode)">Restrict Access</button></td>`;
+                userDataElement.appendChild(newRow);
+            });
+        }
+    </script>
+</body>
+</html>
